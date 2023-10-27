@@ -4,8 +4,9 @@
 # coursekata <img src='man/figures/logo.png' align="right" height="138.5" />
 
 <!-- badges: start -->
-<!-- [![CRAN status](https://www.r-pkg.org/badges/version/coursekata)](https://CRAN.R-project.org/package=coursekata) -->
 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/coursekata)](https://CRAN.R-project.org/package=coursekata)
 [![R build
 status](https://github.com/coursekata/coursekata-r/workflows/R-CMD-check/badge.svg)](https://github.com/coursekata/coursekata-r/actions)
 [![codecov](https://codecov.io/gh/coursekata/coursekata-r/branch/main/graph/badge.svg?token=HEenoYyHcn)](https://app.codecov.io/gh/coursekata/coursekata-r)
@@ -32,19 +33,21 @@ the [tidyverse](https://tidyverse.tidyverse.org) meta-package.
 
 ## Installation
 
+This package is available on CRAN and via the source on GitHub. In both
+cases, the installation is two-part: first install the package, then
+install the data packages `fivethirtyeight` and `fivethirtyeightdata`:
+
 ``` r
-# Install the development version from GitHub
-# install.packages("remotes")
-remotes::install_github("coursekata/coursekata-r")
+install.packages("coursekata")
+coursekata::coursekata_install()
 ```
 
-Note that installing the package will install all of the functions that
-are used in the course, but by default a couple of packages will not be
-installed: `fivethirtyeight` and `fivethirtyeightdata`. These packages
-only contain data, so the R package building process complains when
-functions are not imported from them. The first time you call
-`library(coursekata)` you will be prompted to install the packages if
-they are not already installed.
+``` r
+# Install the development version from GitHub
+# install.packages("pak")
+pak::pak("coursekata/coursekata-r")
+coursekata::coursekata_install()
+```
 
 ## Loading Packages Used in CourseKata Courses
 
@@ -86,14 +89,15 @@ instructors who teach the course. This package installs these:
 
 ### Startup options
 
-- By default, the package will show all startup messages from the
-  dependent packages. To quiet these (like in the output above), you can
-  set `options(coursekata.quiet = TRUE)`
-- By default, a few checks are performed on startup to check that the
-  packages are installed, up-to-date, and loading from the correct
-  locations. This can take a couple of seconds; to disable this in
-  environments where time is critical set
-  `options(coursekata.quickstart = TRUE)`
+- `coursekata.quickstart`: Each time the package is loaded (e.g. via
+  `library(coursekata)`) a check is run to ensure that all the
+  dependencies are installed and reasonably up-to-date. If they are not,
+  you will be prompted to install missing packages. This can be disabled
+  by setting `options(coursekata.quickstart = FALSE)`.
+
+- `coursekata.quiet`: By default, the package will show all startup
+  messages from the dependent packages. To quiet these (like in the
+  output above), you can set `options(coursekata.quiet = TRUE)`
 
 ## Functions and Theme
 

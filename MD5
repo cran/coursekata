@@ -1,10 +1,10 @@
-f6bc404166ef3102ef95cbb45f208eeb *DESCRIPTION
+a324dd25e17dc0a8628270e86675f4ed *DESCRIPTION
 b0489401450f057a5ed0ab8edab7d68b *NAMESPACE
-f4aedc2b35a91e602b03b2b71805a077 *NEWS.md
+219adae590ed8badcdade6e0808c4c06 *NEWS.md
 516c9fa6a67f5b86d62d0d3acfa43568 *R/coursekata-package.R
-778d2973f5ca9352613b8a7998f19453 *R/coursekata_attach.R
-73250d3a92757347bbab58bedbc6fab0 *R/coursekata_install.R
-2e10ddb9463143a5e341909e77d66c66 *R/coursekata_packages.R
+e336a3ebab6b3632f2ba07c85db7e56a *R/coursekata_attach.R
+fcfb7a00694eac641d5102f60a4668d9 *R/coursekata_install.R
+d37e7d72491d09f5dd2506112fe9ecc4 *R/coursekata_packages.R
 43bb1f512a239229017db186105e8a66 *R/coursekata_repos.R
 ab727dcd0c8442f412fd612224c0910e *R/data.R
 44abe5117d4f3a859c89502560c777a5 *R/distribution_parts.R
@@ -12,10 +12,10 @@ ab727dcd0c8442f412fd612224c0910e *R/data.R
 f293ddc07b831977b6d22ad1678c6884 *R/gf_model.R
 915ce60686f284ec44d7e86ce6efe563 *R/test_fit.R
 6fd5196d23df31823563a1768304a21a *R/theme.R
-e43d239a1f30b7367ee0ceae235a37aa *R/utils-pkg.R
+b8cb59d0483b6c386cdf6374c1844b84 *R/utils-pkg.R
 ac211710b15964f947fecb245c7704bf *R/utils.R
-a332d1f361d94ecbf340afb8f02ef319 *R/zzz.R
-428a24a6f3d1fe9bfa80dfcb939037f2 *README.md
+fae8579ea4e826995f7a5222ced926eb *R/zzz.R
+1bd68ab0e0900a782a66eb6d06c46a17 *README.md
 7080893e02c49cd296d4424b9be55069 *build/partial.rdb
 7c53189cd4633ff804dc30989ff29ed4 *data/Ames.rda
 d4722e9cc0734114d83a1c74fe144652 *data/Fingers.messy.rda
@@ -42,7 +42,7 @@ cb5cce693a79c04c355e0ee5cea85ac2 *man/TipExperiment.Rd
 4b9580b896a6990a84fc3e1ba8925f55 *man/World.Rd
 c8b9ea69b4f67a035e50fed05e40e8a3 *man/class_data.Rd
 e4003b1cea8d0ebeddbc4de743ef2c83 *man/coursekata-package.Rd
-d2b99d5e4a9ce167db3ab0a6adce4730 *man/coursekata_attach.Rd
+2d0abcd4b1184e0a03c04baaab15569a *man/coursekata_attach.Rd
 f54a8b60a6fc74125cc16a6f17667978 *man/coursekata_install.Rd
 fbfc252d8b995c1653b92566328134e8 *man/coursekata_load_theme.Rd
 666a5e1de9c1b3af0913e4053f5ed543 *man/coursekata_packages.Rd
@@ -54,8 +54,8 @@ b6d139c568f7f68139628f2265f59d36 *man/distribution_parts.Rd
 909bc8addec271de371faf73929ffc36 *man/er.Rd
 b470e311837748deb59c6927f58d89d2 *man/estimate_extraction.Rd
 f77a6b9351e88e7be41c2084eae2436b *man/fevdata.Rd
-dd8e2705186da85f067d8ed675d04857 *man/figures/README-samp_dist_of_b1-1.png
-b15d61216254aa3e0783d6a4d889eff1 *man/figures/README-samp_dist_of_hp-1.png
+2ffb7202ffa8cf9dfbd720b144628d16 *man/figures/README-samp_dist_of_b1-1.png
+836fa815ad35f40ee916664e648e3ca5 *man/figures/README-samp_dist_of_hp-1.png
 2ada087c9b1b4d1661a586dd7ed6d0e7 *man/figures/README-shaded_middle-1.png
 cb1e46f469cfbbbde29c8b5113e1d789 *man/figures/lifecycle-archived.svg
 c0d2e5a54f1fa4ff02bf9533079dd1f7 *man/figures/lifecycle-defunct.svg
@@ -143,7 +143,7 @@ c63e841c2e86ea62961afabe55a7aeea *tests/testthat/_snaps/gf_model/gf-violin-cond-
 9d9a4e3f69aaad13bf70800796ad007d *tests/testthat/_snaps/gf_model/gf-violin-horizontal-empty-model-outcome-on-x.svg
 ba4c303e2cebca547f40c30a2a800e6c *tests/testthat/_snaps/gf_model/should-look-the-same-as-if-you-did-the-lm-version.svg
 03cd8f6d07ca41783a4f7b73e2d50ceb *tests/testthat/helper-test_utilities.R
-2d2674c59b3d19b06bdd3a6f5edb98e6 *tests/testthat/test-coursekata_attach.R
+68289feb67a41dc4f643c8d2a798a057 *tests/testthat/test-coursekata_attach.R
 e15b2c90ad5b095503058429d35ae65f *tests/testthat/test-coursekata_packages.R
 dd92a458c61db7a05458e6baa9668900 *tests/testthat/test-coursekata_repos.R
 fe757ee8828015887c79171fc33cfe1f *tests/testthat/test-distribution_parts.R
@@ -151,4 +151,4 @@ fe757ee8828015887c79171fc33cfe1f *tests/testthat/test-distribution_parts.R
 dbc590d9663147a73d9382eca3dc4e92 *tests/testthat/test-gf_model.R
 4904692754816417b75f04103ae3b558 *tests/testthat/test-palette.R
 319c94d8352400e26093d76de2ffc0d4 *tests/testthat/test-test_fit.R
-252ed57c4d490ee5af64ff4641af93a1 *tests/testthat/test-utils-pkg.R
+57a4f1a2533520e8e6448f71a967a527 *tests/testthat/test-utils-pkg.R
