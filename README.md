@@ -33,21 +33,32 @@ the [tidyverse](https://tidyverse.tidyverse.org) meta-package.
 
 ## Installation
 
-This package is available on CRAN and via the source on GitHub. In both
-cases, the installation is two-part: first install the package, then
-install the data packages `fivethirtyeight` and `fivethirtyeightdata`:
+This package is *not* available on CRAN, it is only available on GitHub.
+You can install it using any package manager that supports GitHub
+installations, such as
+[`remotes`](https://cran.r-project.org/package=remotes) or
+[`pak`](https://cran.r-project.org/package=pak).
 
 ``` r
-install.packages("coursekata")
-coursekata::coursekata_install()
-```
+# install.packages("remotes")
+remotes::install_github("coursekata/coursekata-r")
 
-``` r
-# Install the development version from GitHub
 # install.packages("pak")
 pak::pak("coursekata/coursekata-r")
+```
+
+After installing the core packages, you might want to install the
+supplementary data packages used in the course. These are not required
+for the package to work, but they are used in the course materials. You
+can install them with the following command:
+
+``` r
 coursekata::coursekata_install()
 ```
+
+If you don’t install these packages, you will be prompted to install
+them when you load the package. If you want to disable that message, you
+can set `options(coursekata.quickstart = TRUE)`.
 
 ## Loading Packages Used in CourseKata Courses
 
@@ -57,11 +68,11 @@ to the [functions and theme](#functions-and-theme) included in the
 
 ``` r
 library(coursekata)
-#> ── CourseKata packages ──────────────────────────────────── coursekata 0.14.1 ──
-#> ✔ dslabs              0.7.6       ✔ Metrics             0.1.4
+#> ── CourseKata packages ──────────────────────────────────── coursekata 0.16.1 ──
+#> ✔ dslabs              0.8.0       ✔ Metrics             0.1.4
 #> ✔ Lock5withR          1.2.2       ✔ lsr                 0.5.2
-#> x fivethirtyeightdata             ✔ mosaic              1.9.0
-#> x fivethirtyeight                 ✔ supernova           2.5.8
+#> ✔ fivethirtyeightdata 0.1.0       ✔ mosaic              1.9.1
+#> ✔ fivethirtyeight     0.6.2       ✔ supernova           3.0.0
 ```
 
 - [supernova](https://cran.r-project.org/package=supernova), for
@@ -93,7 +104,7 @@ instructors who teach the course. This package installs these:
   `library(coursekata)`) a check is run to ensure that all the
   dependencies are installed and reasonably up-to-date. If they are not,
   you will be prompted to install missing packages. This can be disabled
-  by setting `options(coursekata.quickstart = FALSE)`.
+  by setting `options(coursekata.quickstart = TRUE)`.
 
 - `coursekata.quiet`: By default, the package will show all startup
   messages from the dependent packages. To quiet these (like in the
@@ -117,10 +128,16 @@ fit <- lm(mpg ~ hp, data = mtcars)
 # the estimate for β₀, the intercept
 b0(fit)
 #> [1] 30.09886
+```
+
+``` r
 
 # the estimate for β₁, the slope
 b1(fit)
 #> [1] -0.06822828
+```
+
+``` r
 
 # all the estimates
 b(fit)
@@ -129,14 +146,23 @@ b(fit)
 #> 
 #> $b_hp
 #> [1] -0.06822828
+```
+
+``` r
 
 # the proportional reduction in error
 pre(fit)
 #> [1] 0.6024373
+```
+
+``` r
 
 # Fisher's F value
 f(fit)
 #> [1] 45.4598
+```
+
+``` r
 
 # the p-value for the F test
 p(fit)

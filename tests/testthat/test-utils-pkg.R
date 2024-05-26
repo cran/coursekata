@@ -4,7 +4,7 @@ test_that("it determines whether a package is attached or not", {
 
   # make sure the package can be added
   if (!require(pkgs, character.only = TRUE, quietly = TRUE)) {
-    fail(paste("Package not available:", pkgs))
+    fail(paste("Package not available:", pkgs, "Make sure to install all SUGGESTS packages."))
   }
 
   purrr::walk(pkgs, detacher)
@@ -36,19 +36,4 @@ test_that("requiring a package can be quiet", {
   pkgs <- "fivethirtyeight" # use this package because it is not imported
   purrr::walk(pkgs, detacher)
   expect_message(pkg_require(pkgs, quietly = TRUE), NA)
-})
-
-
-test_that("installing fivethirtyeightdata works as intended", {
-  skip("Make sure to run this when testing locally.")
-
-  detacher("fivethirtyeightdata")
-
-  tryCatch(
-    suppressMessages(remove.packages("fivethirtyeightdata")),
-    error = function(e) invisible(NULL)
-  )
-
-  pkg_check_installed("fivethirtyeightdata")
-  expect_true(require("fivethirtyeightdata"))
 })
