@@ -1,7 +1,7 @@
 Package: coursekata
 Title: Packages and Functions for 'CourseKata' Courses
-Version: 0.18.0
-Date: 2024-08-16
+Version: 0.18.1
+Date: 2024-12-12
 Authors@R: c(
     person("Adam", "Blake", , "adam@coursekata.org", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0001-7881-8652")),
@@ -35,10 +35,10 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2024-08-16 19:56:57 UTC; adamblake
+Packaged: 2024-12-12 16:51:12 UTC; adamblake
 Author: Adam Blake [cre, aut] (<https://orcid.org/0000-0001-7881-8652>),
   Ji Son [aut] (<https://orcid.org/0000-0002-4258-4791>),
   Jim Stigler [aut] (<https://orcid.org/0000-0001-6107-7827>)
 Maintainer: Adam Blake <adam@coursekata.org>
 Repository: CRAN
-Date/Publication: 2024-08-16 20:20:02 UTC
+Date/Publication: 2024-12-12 17:10:02 UTC
