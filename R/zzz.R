@@ -4,7 +4,6 @@
 #' `base::library()` skips its default "masked objects" messages.
 #'
 #' @keywords internal
-#' @export
 ".conflicts.OK" <- TRUE
 
 .onLoad <- function(libname, pkgname) {

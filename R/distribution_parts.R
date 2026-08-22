@@ -6,7 +6,7 @@
 #' specified region will suck up the extra space. For example, the requesting the upper 30% of the
 #' `[1 2 3 4]` will return `[FALSE FALSE TRUE TRUE]` because the 30% was greedy.
 #'
-#' Note that `NA` values are ignored, i.e. they will always return `FALSE`.
+#' Note that `NA` values are ignored when sizing the region, and come back as `NA`.
 #'
 #' @param x The distribution of values to check.
 #' @param prop The proportion of values to find.
@@ -16,29 +16,47 @@
 #'
 #' @rdname distribution_parts
 #' @export
-#' @examples
+#' @seealso
+#' The sampling distributions guide walks through building these distributions
+#' with `do()` and `shuffle()`, and shows the bootstrap variant:
+#' <https://coursekata.github.io/coursekata-r/articles/sampling-distributions.html>
 #'
+#' @examples
+#' # each function returns a logical vector marking the values in its region
 #' upper(1:10, .1)
 #' lower(1:10, .2)
 #' middle(1:10, .5)
 #' tails(1:10, .5)
 #'
-#' sampling_distribution <- do(1000) * mean(rnorm(100, 5, 10))
-#' sampling_distribution %>%
-#'   gf_histogram(~mean, data = sampling_distribution, fill = ~ middle(mean, .68)) %>%
-#'   gf_refine(scale_fill_manual(values = c("blue", "coral")))
+#' # they are most often used as the fill aesthetic of a histogram of a
+#' # sampling distribution -- here, b1s estimated from shuffled (null) data
+#' set.seed(42)
+#' shuffled <- data.frame(b1 = replicate(200, {
+#'   shuffled_tip <- base::sample(TipExperiment$Tip)
+#'   b1(lm(shuffled_tip ~ Condition, data = TipExperiment))
+#' }))
+#'
+#' # color the middle 95%: the b1 values we would expect to see often
+#' # if the empty model were true
+#' gf_histogram(~b1, data = shuffled, binwidth = 1, fill = ~ middle(b1, .95))
+#'
+#' # tails() marks the same cutoffs with the opposite coloring: the values
+#' # outside the middle 95% are the 5% most extreme
+#' gf_histogram(~b1, data = shuffled, binwidth = 1, fill = ~ tails(b1, .95))
+#'
+#' # outer() marks the same region as tails() but takes the tail proportion
+#' # directly: the outer 5%
+#' gf_histogram(~b1, data = shuffled, binwidth = 1, fill = ~ outer(b1, .05))
+#'
+#' # upper() and lower() are for directional hypotheses: all 5% goes in one tail
+#' gf_histogram(~b1, data = shuffled, binwidth = 1, fill = ~ upper(b1, .05))
+#' gf_histogram(~b1, data = shuffled, binwidth = 1, fill = ~ lower(b1, .05))
 middle <- function(x, prop = .95, greedy = TRUE) {
   tail_prop <- (1 - prop) / 2
   in_upper <- upper(x, tail_prop, !greedy)
   in_lower <- lower(x, tail_prop, !greedy)
 
   !in_upper & !in_lower
-}
-
-#' @rdname distribution_parts
-#' @export
-tails <- function(x, prop = .95, greedy = TRUE) {
-  !middle(x, prop, greedy)
 }
 
 #' @description
@@ -59,6 +77,12 @@ outer <- function(x, prop) {
     abort("`prop` must be a single number between 0 and 1 (exclusive).")
   }
   tails(x, 1 - prop)
+}
+
+#' @rdname distribution_parts
+#' @export
+tails <- function(x, prop = .95, greedy = TRUE) {
+  !middle(x, prop, greedy)
 }
 
 
@@ -96,6 +120,12 @@ upper <- function(x, prop = .025, greedy = TRUE) {
 #' @noRd
 tail_size <- function(x, prop, greedy) {
   na_rm <- stats::na.omit(x)
-  tail_unbiased <- length(na_rm) * prop
-  if (greedy) ceiling(tail_unbiased) else floor(tail_unbiased)
+  exact <- length(na_rm) * prop
+  nearest <- round(exact)
+
+  drift_tolerance <- 32 * .Machine$double.eps * max(abs(exact), 1)
+  # without `nearest > 0` a vanishingly small greedy tail snaps to zero and takes nothing
+  if (nearest > 0 && abs(exact - nearest) <= drift_tolerance) exact <- nearest
+
+  if (greedy) ceiling(exact) else floor(exact)
 }

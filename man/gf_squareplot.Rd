@@ -5,71 +5,183 @@
 \title{Countable-Rectangle Histogram}
 \usage{
 gf_squareplot(
-  x,
+  object = NULL,
+  gformula = NULL,
   data = NULL,
+  ...,
   binwidth = NULL,
-  origin = NULL,
+  bins = NULL,
+  center = NULL,
   boundary = NULL,
-  fill = "#7fcecc",
-  color = "black",
-  alpha = 1,
+  closed = NULL,
+  breaks = NULL,
+  bars = "none",
   na.rm = TRUE,
-  mincount = NULL,
-  bars = c("none", "outline", "solid"),
-  xbreaks = NULL,
-  xrange = NULL,
-  show_dgp = FALSE,
-  show_mean = FALSE,
-  auto_subdivide = FALSE
+  xlab,
+  ylab,
+  title,
+  subtitle,
+  caption,
+  geom = coursekata::GeomSquareplot,
+  stat = coursekata::StatSquareplot,
+  position = "identity",
+  show.legend = NA,
+  show.help = NULL,
+  inherit = TRUE,
+  environment = parent.frame()
 )
 }
 \arguments{
-\item{x}{Formula (\code{~variable}) or numeric vector.}
+\item{object}{A ggplot object, a data frame, or a formula. When a plot, the
+squares are added to it.}
 
-\item{data}{Data frame (required if \code{x} is a formula).}
+\item{gformula}{A formula with shape \code{~x}, optionally faceted as \code{~ x | z}.}
 
-\item{binwidth}{Width of histogram bins. Auto-calculated if \code{NULL}.}
+\item{data}{A data frame holding the variable in \code{gformula}.}
 
-\item{origin}{Starting position for bins.}
+\item{...}{Aesthetics such as \code{fill} or \code{alpha}, either set to a value or
+mapped with a one-sided formula (\code{fill = ~group}). \code{color} sets the color
+of the separators between squares and may be mapped; \code{bar_color} sets the
+bar's own color, and \code{bar_linewidth} its width. Also takes
+\code{ggplot2::stat_bin()}'s \code{pad}, which adds an empty bin on either end of
+the range.}
 
-\item{boundary}{Alias for \code{origin}.}
+\item{binwidth}{Width of the bins, for a continuous x. Chosen from the data
+when unset: \code{1} for whole-number data spanning 50 or less, so every value
+gets a column of its own, and a thirtieth of the range otherwise. Has no
+effect on a discrete x, which is counted instead.}
 
-\item{fill}{Rectangle fill color. Default \code{"#7fcecc"}.}
+\item{bins}{How many bins to divide the range into, used when \code{binwidth} is
+unset.}
 
-\item{color}{Rectangle border color. Default \code{"black"}.}
+\item{center, boundary}{The center of one bin, or an edge of one. Either
+places the whole grid; give one or the other, not both.}
 
-\item{alpha}{Transparency. Default \code{1}.}
+\item{closed}{Which end of a bin holds a value that lands exactly on it,
+\code{"right"} or \code{"left"}. For whole-number data, \code{boundary = 0.5} puts every
+value in the column it is labeled with, whichever end is closed.}
 
-\item{na.rm}{Remove \code{NA} values. Default \code{TRUE}.}
+\item{breaks}{The bin edges themselves, which need not be evenly spaced.}
 
-\item{mincount}{Minimum y-axis height for consistent scaling.}
+\item{bars}{Display style: \code{"none"} (squares only), \code{"outline"} (squares inside
+the bar they add up to) or \code{"solid"} (that bar alone).}
 
-\item{bars}{Display style: \code{"none"} (squares only), \code{"outline"}, or
-\code{"solid"}.}
+\item{na.rm}{Must be \code{TRUE}. A missing value has no square to draw.}
 
-\item{xbreaks}{Number of x-axis breaks or vector of specific positions.}
+\item{xlab, ylab, title, subtitle, caption}{Labels.}
 
-\item{xrange}{X-axis limits as \code{c(min, max)}.}
+\item{geom, stat, position}{The layer's geom, stat and position.}
 
-\item{show_dgp}{Show DGP annotation overlay. Default \code{FALSE}.}
+\item{show.legend}{Whether to show a legend, or \code{NA} to decide per aesthetic.}
 
-\item{show_mean}{Show dashed mean line. Default \code{FALSE}.}
+\item{show.help}{Print the function's own help instead of drawing.}
 
-\item{auto_subdivide}{Split bins with >75 observations into sub-columns.
-Default \code{FALSE}.}
+\item{inherit}{Whether to inherit the plot's aesthetics.}
+
+\item{environment}{Where to evaluate the formula.}
 }
 \value{
-A ggplot object with S3 class \code{c("gf_squareplot", "gg", "ggplot")}.
+A ggplot object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \details{
-Creates histograms where individual data points are visible as stacked unit
-rectangles, making counts easy to visualize. Designed for teaching
-statistical concepts, particularly sampling distributions.
+Creates histograms where each observation is drawn as its own square, stacked
+into columns, so a bin's height can be counted as well as read off the axis:
+\code{n = 47} is 47 squares. Designed for teaching statistical concepts like
+sampling distributions and hypothesis testing.
+
+Sensible defaults are chosen based on the data:
+\itemize{
+\item For integer-valued data with a small range, the \code{binwidth} defaults to 1 so
+that each integer gets its own column. Everything else about the bins is
+\code{stat_bin()}'s: \code{bins}, \code{center}, \code{boundary}, \code{closed}, \code{breaks} and \code{pad}
+put a squareplot's columns exactly where a \code{gf_histogram()}'s bars would be.
+\item A factor keeps its levels, so a level nobody landed in still holds its place
+on the axis. Knowing a value never occurred is the point.
+\item A discrete x -- a factor, character or logical vector -- is counted, one
+column per level, positioned the way \code{gf_bar()} positions its bars. The
+binning arguments (\code{bins}, \code{binwidth}, \code{center}, \code{boundary}, \code{closed},
+\code{breaks}, \code{pad}) belong to a continuous x; supplying one alongside a
+discrete x warns rather than changing the plot.
+\item The white separator between two squares is capped at a quarter of a square's
+smaller side, so as a bin fills and its squares shrink the separator thins
+with them and the squares stay countable.
+\item The y axis is a count, so its breaks are whole numbers.
+}
+
+The bins are a histogram's bins: \code{binwidth}, \code{bins}, \code{center}, \code{boundary},
+\code{closed} and \code{breaks} mean what they mean on \code{\link[ggformula:gf_histogram]{ggformula::gf_histogram()}}, and
+the same arguments give the same bin edges and the same counts, so squares
+laid over bars land inside them.
+
+Everything that is not the squares is a layer or a scale: \verb{\%>\% show_mean()},
+\verb{\%>\% show_dgp()}, \verb{\%>\% gf_lims(x = )},
+\verb{\%>\% gf_refine(ggplot2::expand_limits(y = ))}. Each of these was an argument
+here once, and passing the old name is refused with the replacement named, so
+a call written against the old signature says what to write rather than
+drawing a plot with the mark missing.
 }
 \examples{
+# each observation is a countable square
 gf_squareplot(~Thumb, data = Fingers)
+
+# `bars` controls the display: "none" (default), "outline", or "solid"
 gf_squareplot(~Thumb, data = Fingers, bars = "outline")
+
+# the bins are a histogram's bins, so squares laid over bars land inside them --
+# name the grid on both layers, because a layer never reads its neighbor's
+gf_histogram(~Thumb, data = Fingers, bins = 8) \%>\% gf_squareplot(bins = 8)
+
+# customize fill color, binwidth, and axis limits
+gf_squareplot(~Thumb, data = Fingers, fill = "coral", binwidth = 5) \%>\%
+  gf_lims(x = c(30, 90))
+
+# integer data with a small range gets one column per integer
+int_data <- data.frame(rolls = sample(1:6, 30, replace = TRUE))
+gf_squareplot(~rolls, data = int_data)
+
+# the plot is a real ggformula layer, so it facets and takes mapped aesthetics
+gf_squareplot(~ Thumb | Sex, data = Fingers)
+gf_squareplot(~Thumb, data = Fingers, fill = ~Sex)
+
+# with 2000 observations the squares shrink, and their separators thin to fit
+set.seed(24)
+large_data <- data.frame(x = rnorm(2000, mean = 50, sd = 10))
+gf_squareplot(~x, data = large_data)
+
+# show a dashed line at the sample mean
+gf_squareplot(~Thumb, data = Fingers) \%>\% show_mean()
+
+# frame a sampling distribution with its data generating process: with only
+# 10 shuffles, the mean of the distribution can land far from the null.
+# The limits come before the overlays: show_dgp() reads the top of the count
+# axis to decide how much room its band needs.
+shuffled_b1 <- function(n) {
+  data.frame(b1 = replicate(n, {
+    shuffled_tip <- base::sample(TipExperiment$Tip)
+    b1(lm(shuffled_tip ~ Condition, data = TipExperiment))
+  }))
+}
+
+set.seed(42)
+gf_squareplot(~b1, data = shuffled_b1(10), binwidth = 2) \%>\%
+  gf_lims(x = c(-30, 30)) \%>\%
+  gf_refine(ggplot2::expand_limits(y = 10)) \%>\%
+  show_mean() \%>\%
+  show_dgp()
+
+# a factor keeps every level, including the ones nothing landed in
+ratings <- data.frame(rating = factor(
+  base::sample(1:5, 20, replace = TRUE, prob = c(1, 2, 4, 2, 1)),
+  levels = 1:5
+))
+gf_squareplot(~rating, data = ratings)
+}
+\seealso{
+\code{\link[=show_mean]{show_mean()}} and \code{\link[=show_dgp]{show_dgp()}} annotate a distribution.
+The sampling distributions guide shows this plot in the context of a full
+shuffle-and-estimate workflow:
+\url{https://coursekata.github.io/coursekata-r/articles/sampling-distributions.html}
 }
